@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guide Overwatch : compos et utilités des 53 héros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600;1,700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EDF1F6; --surface:#FFFFFF; --ink:#13202F; --muted:#56667A; --line:#D3DCE7; --bar:#DCE5EF;
+  --tank:#2F6FD0; --dgt:#D2473B; --sup:#238A68;
+  --tank-bg:#E3EDFB; --dgt-bg:#FBE6E3; --sup-bg:#DFF3EB;
+  --accent:#F28A1B; --focus:#1B5FC9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1622; --surface:#16212F; --ink:#E7EDF5; --muted:#9AA9BC; --line:#2A3A4E; --bar:#1D2A3B;
+    --tank:#6AA2F2; --dgt:#F07A6D; --sup:#4FC79C;
+    --tank-bg:#1B2C47; --dgt-bg:#3A201F; --sup-bg:#16352B;
+    --accent:#F7A33B; --focus:#8DBBFF;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1622; --surface:#16212F; --ink:#E7EDF5; --muted:#9AA9BC; --line:#2A3A4E; --bar:#1D2A3B;
+  --tank:#6AA2F2; --dgt:#F07A6D; --sup:#4FC79C;
+  --tank-bg:#1B2C47; --dgt-bg:#3A201F; --sup-bg:#16352B;
+  --accent:#F7A33B; --focus:#8DBBFF;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 16px/1.55 'Barlow','Segoe UI',Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.display{font-family:'Barlow Condensed','Arial Narrow','Roboto Condensed',Arial,sans-serif;font-style:italic;font-weight:700;letter-spacing:.2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+/* en-tête */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:4px 24px}
+.brand{padding:12px 0 6px}
+.brand h1{margin:0;font-size:30px;line-height:1.05}
+.tabs{display:flex;gap:2px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;border-bottom:4px solid transparent;padding:12px 14px 10px;font-weight:600;color:var(--muted);white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+
+.intro{padding:22px 0 8px}
+.intro p{margin:0 0 8px;max-width:70ch;font-size:18px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px;margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* pastilles de héros */
+.chip{display:inline-flex;align-items:center;gap:3px;border:1.5px solid var(--c);background:var(--cb);color:var(--ink);border-radius:999px;padding:4px 12px;font-weight:600;font-size:15px;line-height:1.3;margin:0 6px 6px 0;text-align:left}
+.chip:hover{filter:brightness(.97)}
+.r-tank{--c:var(--tank);--cb:var(--tank-bg)}
+.r-dgt{--c:var(--dgt);--cb:var(--dgt-bg)}
+.r-sup{--c:var(--sup);--cb:var(--sup-bg)}
+.chip.l2{background:transparent;border-style:dashed;font-weight:500}
+.qm{font-size:12px;font-weight:700;color:var(--muted);margin-left:2px}
+.swatch{display:inline-block;width:26px;height:14px;border-radius:999px;border:1.5px solid var(--tank);background:var(--tank-bg)}
+.swatch.dash{background:transparent;border-style:dashed}
+
+/* choix de compo */
+.pick{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:16px 0 20px}
+.cp{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:8px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.cp svg{width:100%;max-width:150px;height:auto}
+.cp .nm{font-size:22px;line-height:1}
+.cp[aria-pressed="true"]{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 1px var(--accent) inset}
+.dia .a{fill:var(--tank)}
+.dia .f{fill:var(--dgt)}
+.dia .ln{stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round}
+.dia .dash{stroke-dasharray:5 5;stroke-width:1.8;opacity:.75}
+.dia .thick{stroke-width:5}
+.dia .arc{stroke:var(--sup);stroke-width:6;fill:none;stroke-linecap:round}
+.dia .sq{fill:var(--sup)}
+.dia .ah{fill:var(--ink);stroke:none}
+
+/* panneau */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:24px}
+.phead{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:20px;align-items:center;margin-bottom:18px}
+.phead svg{width:100%;height:auto;background:var(--bar);border-radius:10px;padding:6px}
+.phead h2{margin:0 0 6px;font-size:40px;line-height:1}
+.phead p{margin:0;font-size:18px;max-width:60ch}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rolecol{border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.rolebar{background:var(--bar);padding:6px 12px;font-size:22px;line-height:1.2}
+.rolebar.r-tank{color:var(--tank)} .rolebar.r-dgt{color:var(--dgt)} .rolebar.r-sup{color:var(--sup)}
+.rolebody{padding:12px 12px 6px;min-height:56px}
+.none{color:var(--muted);font-size:14px;margin:0 0 8px}
+.hint{color:var(--muted);font-size:14px;margin:10px 0 0}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.box{border:1px solid var(--line);border-left:6px solid var(--line);border-radius:10px;padding:12px 16px}
+.box h3{margin:0 0 6px;font-size:22px;line-height:1.2}
+.box ul{margin:0;padding-left:20px}
+.box li{margin:0 0 6px}
+.box.good{border-left-color:var(--sup)} .box.bad{border-left-color:var(--dgt)}
+.box.play{border-left-color:var(--tank)} .box.counter{border-left-color:var(--accent)}
+.inf{color:var(--muted);font-size:13px;margin-left:4px}
+.teams{margin-top:18px}
+.teams h3{margin:0 0 8px;font-size:24px}
+.team{border:1px solid var(--line);border-radius:10px;padding:10px 12px 4px;margin-bottom:10px}
+.team .tt{font-weight:600;margin-bottom:6px}
+.src{color:var(--muted);font-size:14px;margin:16px 0 0}
+.src a{color:inherit}
+
+/* utilités */
+.upick{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 20px}
+.up{background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:6px 16px;font-weight:600}
+.up[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.udef{font-size:18px;margin:0 0 6px;max-width:70ch}
+.urows{margin-top:14px}
+.urole{margin:14px 0 4px;font-size:24px}
+.urole.r-tank{color:var(--tank)} .urole.r-dgt{color:var(--dgt)} .urole.r-sup{color:var(--sup)}
+.urow{display:grid;grid-template-columns:190px 1fr;gap:6px 14px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line)}
+.urow .why{color:var(--ink)}
+
+/* tableau */
+.mrow{margin-bottom:22px}
+.mrow h3{margin:0 0 8px;font-size:32px;line-height:1}
+
+/* héros */
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.tools input[type=search]{flex:1 1 220px;min-width:0;padding:10px 14px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit}
+.rf{background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:6px 16px;font-weight:600}
+.rf[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.sub{margin:10px 0 6px;font-size:20px;line-height:1.2}
+.sub small{display:block;font-family:'Barlow','Segoe UI',Arial,sans-serif;font-style:normal;font-weight:400;font-size:13px;color:var(--muted)}
+
+/* fiche */
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 40px)}
+dialog::backdrop{background:rgba(8,14,22,.6)}
+.dlg{padding:20px 20px 16px}
+.dlg h2{margin:0;font-size:40px;line-height:1}
+.dlg .meta{color:var(--muted);margin:2px 0 12px}
+.dlg h3{margin:14px 0 6px;font-size:22px;line-height:1.2}
+.dlg ul{margin:0;padding-left:20px}
+.dlg li{margin:0 0 4px}
+.dlg .close{margin-top:14px;background:var(--ink);color:var(--surface);border:0;border-radius:8px;padding:8px 18px;font-weight:600}
+
+footer{padding:8px 0 40px;color:var(--muted);font-size:14px}
+footer p{margin:0 0 6px;max-width:80ch}
+[hidden]{display:none !important}
+
+@media (max-width:900px){
+  .pick{grid-template-columns:repeat(3,1fr)}
+  .phead{grid-template-columns:1fr}
+  .phead svg{max-width:340px}
+}
+@media (max-width:720px){
+  .cols3,.cols2{grid-template-columns:1fr}
+  .urow{grid-template-columns:1fr}
+  .brand h1{font-size:26px}
+  .phead h2{font-size:34px}
+  .panel{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><h1 class="display">Guide Overwatch</h1></div>
+    <nav class="tabs" role="tablist" aria-label="Sections du guide">
+      <button class="tab" role="tab" id="t-compos" aria-selected="true" aria-controls="s-compos" data-tab="compos">Par compo</button>
+      <button class="tab" role="tab" id="t-utils" aria-selected="false" aria-controls="s-utils" data-tab="utils">Par utilité</button>
+      <button class="tab" role="tab" id="t-matrix" aria-selected="false" aria-controls="s-matrix" data-tab="matrix">Tableau</button>
+      <button class="tab" role="tab" id="t-heros" aria-selected="false" aria-controls="s-heros" data-tab="heros">Tous les héros</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p>Overwatch est bien plus difficile qu'il n'en a l'air. Ce guide classe les 53 héros par compo et par utilité, pour comprendre qui joue avec qui et pourquoi.</p>
+    <p>Touche un nom pour ouvrir la fiche du héros.</p>
+    <div class="legend">
+      <span><i class="swatch"></i>Plein : le héros joue surtout cette compo</span>
+      <span><i class="swatch dash"></i>Contour : il peut aussi y jouer</span>
+      <span><b>?</b> Placement à confirmer</span>
+      <span><b>◇</b> Déduction, pas une source</span>
+    </div>
+  </section>
+
+  <section id="s-compos" role="tabpanel" aria-labelledby="t-compos">
+    <div class="pick" id="comp-pick"></div>
+    <div class="panel" id="comp-panel"></div>
+  </section>
+
+  <section id="s-utils" role="tabpanel" aria-labelledby="t-utils" hidden>
+    <div class="upick" id="util-pick"></div>
+    <div class="panel" id="util-panel"></div>
+  </section>
+
+  <section id="s-matrix" role="tabpanel" aria-labelledby="t-matrix" hidden>
+    <div class="panel" id="matrix"></div>
+  </section>
+
+  <section id="s-heros" role="tabpanel" aria-labelledby="t-heros" hidden>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Chercher un héros" aria-label="Chercher un héros">
+      <button class="rf" data-role="all" aria-pressed="true">Tous</button>
+      <button class="rf" data-role="tank" aria-pressed="false">Tank</button>
+      <button class="rf" data-role="dgt" aria-pressed="false">Dégâts</button>
+      <button class="rf" data-role="sup" aria-pressed="false">Soutien</button>
+    </div>
+    <div class="panel" id="all-heroes"></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Les kits des héros récents (Domina, Mizuki, Shion, Sierra, D.Mon, Vendetta, Anran, Jetpack Cat, Emre, Wuyang, Freja) ont été relus dans des guides et wikis. Les équilibrages changent : un héros peut évoluer d'une saison à l'autre.</p>
+  <p>Les compos Turtle et Flank n'ont pas de guide de référence : leurs textes sont surtout des déductions (◇) à confirmer.</p>
+</footer>
+
+<dialog id="hd" aria-labelledby="hd-title"><div class="dlg" id="hd-body"></div></dialog>
+
+<script>
+(function(){
+"use strict";
+
+var ROLES = {tank:"Tank", dgt:"Dégâts", sup:"Soutien"};
+var SOUS = {
+  tank:["Engagement","Colosse","Indéfectible"],
+  dgt:["Flanc","Reconnaissance","Spécialiste","Précision"],
+  sup:["Tactique","Secouriste","Survie"]
+};
+var SOUS_LABEL = {Précision:"Spécialiste en précision", Flanc:"Flanc"};
+var PASSIFS = {
+  "Indéfectible":"Résistance aux ralentissements et au contrôle (CC).",
+  "Reconnaissance":"Révèle les ennemis sous 50 % de vie quand tu les blesses.",
+  "Tactique":"L'excédent de charge d'ultimate est reporté sur le suivant.",
+  "Spécialiste":"Un kill augmente brièvement la vitesse de rechargement."
+};
+
+/* ---------- utilités ---------- */
+var UTILS = [
+  {id:"assassin", nom:"Assassin", def:"Tuer vite les cibles fragiles (soutiens, dégâts) puis repartir."},
+  {id:"sniper", nom:"Sniper", def:"Tuer de loin avec un tir précis, souvent à la tête."},
+  {id:"hitscan", nom:"Hitscan", def:"Le tir touche instantanément, sans temps de vol : il suffit de viser. Pratique contre les héros qui volent.", note:"Les héros très récents (Emre, Sierra, Shion, Vendetta, Anran, Freja…) ne sont pas listés : je n'ai pas vérifié leur type de tir."},
+  {id:"burst", nom:"Burst dmg", def:"Beaucoup de dégâts d'un coup, par un tir ou un enchaînement."},
+  {id:"antitank", nom:"Anti-tank", def:"Gros dégâts, burst ou coupure des soins pour faire fondre les tanks."},
+  {id:"dive", nom:"Plongeur (dive)", def:"Rejoindre vite la backline en passant par-dessus ou à côté de la ligne ennemie."},
+  {id:"antidive", nom:"Anti-dive", def:"Arrêter ceux qui plongent : étourdir, ralentir, endormir, repousser ou bloquer le passage."},
+  {id:"botheal", nom:"Bot heal", def:"Soutien qui se concentre presque tout le temps sur le soin, avec peu de dégâts."}
+];
+
+/* ---------- héros ----------
+   [nom, rôle, sous-rôle, compos, description, utilités]
+   compos : "comp:1" = principal, "comp:2" = secondaire, "?" à la fin = à confirmer
+   utilités : un "?" au début du texte = à confirmer */
+var H = [
+["Bouldozer","tank","Engagement","dive:1","Boule de hamster qui roule vite et s'accroche pour plonger sur les cibles isolées.",{dive:"Roule et s'accroche pour arriver vite sur la backline."}],
+["Chopper","tank","Colosse","brawl:1? poke:2?","Son crochet attire un ennemi vers lui, et il se soigne seul. Placement incertain : un wiki le met en poke, d'autres le voient brawl ou pick.",{antidive:"Son crochet sort un plongeur isolé de sa zone."}],
+["D.Mon","tank","Indéfectible","brawl:1 rush:1","Tank au corps à corps avec épée et bouclier frontal. Le bouclier bloque les tirs à distance, mais pas les attaques de mêlée. Les capacités qui modifient le terrain la gênent.",{}],
+["D.Va","tank","Engagement","dive:1","Tank mobile dont la matrice de défense mange les projectiles venant de face. Si son mécha est détruit, elle continue en pilote.",{dive:"Ses propulseurs la lancent sur la cible.",hitscan:"?Ses canons à fusion sont un fusil à pompe hitscan, selon le wiki."}],
+["Danger","tank","Engagement","brawl:1","Tank de mêlée, apprécié des compos brawl. Je n'ai pas vérifié le détail de son kit.",{}],
+["Domina","tank","Indéfectible","poke:1","Tank poke avec une barrière et de gros dégâts à distance. Ses dégâts de capacité lui rendent du bouclier. Le dive la met en difficulté.",{}],
+["Doomfist","tank","Engagement","dive:1 flank:2?","Tank très rapide qui isole une cible et l'écrase avec ses coups.",{dive:"Frappe et vole sur une cible pour la sortir du combat."}],
+["Mauga","tank","Colosse","brawl:1 poke:2","Tank à deux mitrailleuses, très agressif. Il demande beaucoup de ressources à l'équipe, donc il vaut mieux des alliés autonomes.",{}],
+["Orisa","tank","Colosse","poke:1 turtle:2?","Tank solide qui tient la ligne de loin et résiste bien aux projectiles.",{}],
+["Ramattra","tank","Indéfectible","brawl:1 poke:1","Tank hybride : la forme Omnic sert au poke, la forme Nemesis au corps à corps.",{}],
+["Reine des Junkers","tank","Indéfectible","brawl:1 rush:1","Tank brawl résistant au ralentissement et au CC. Son cri soigne et booste l'équipe pour avancer d'un coup et prendre de l'espace. Forte contre le poke : une fois au corps à corps, il ne peut plus fuir.",{}],
+["Reinhardt","tank","Indéfectible","brawl:1 turtle:2? rush:2?","Grand bouclier et marteau. Sa valeur maximale se trouve à portée de marteau, mais son bouclier protège aussi toute l'équipe.",{}],
+["Sigma","tank","Indéfectible","poke:1","Tank poke avec bouclier flottant et pression à distance. Il est bien plus faible de près.",{}],
+["Winston","tank","Engagement","dive:1","Saute sur la backline avec son jump pack. Il se prépare souvent en hauteur avant de plonger.",{dive:"Saute sur la backline avec son jump pack."}],
+["Zarya","tank","Colosse","brawl:1?","Tank à faisceau : ses bulles protègent et elle gagne de l'énergie en encaissant des dégâts.",{antidive:"Ses bulles absorbent le burst du plongeur."}],
+
+["Anran","dgt","Flanc","dive:1 rush:1 flank:1","Dégâts à base de brûlure : deux touches de Zhuque Fans enflamment l'ennemi, puis Fan the Flames (très courte portée) amplifie la brûlure. Elle est invulnérable pendant Dancing Blaze. Son ultimate Vermillion Ascent la fait voler puis retomber en zone, et elle peut mourir pendant la charge.",{assassin:"Elle élimine vite les soutiens et les DPS mal placés.",burst:"Ses combos de brûlure font beaucoup de dégâts d'un coup.",dive:"Sa ruée et son saut la mènent sur les cibles fragiles."}],
+["Ashe","dgt","Précision","poke:1","Fusil à levier à longue portée et dynamite. Très bonne en poke.",{sniper:"?Fusil avec lunette, longue portée.",hitscan:"?Débattu : certaines sources la classent hitscan, d'autres non."}],
+["Bastion","dgt","Spécialiste","turtle:1 poke:1","Tourelle à énorme cadence de tir. Elle détruit les tanks mais bouge presque pas.",{antitank:"Cadence énorme en tourelle : fait fondre les boucliers et les tanks.",burst:"Gros dégâts d'un coup en forme tourelle.",hitscan:"?Débattu, mais souvent compté hitscan."}],
+["Cassidy","dgt","Précision","poke:1","Revolver précis à moyenne portée. Sa grenade flash étourdit.",{hitscan:"Tir instantané.",antidive:"La grenade flash étourdit un plongeur."}],
+["Chacal","dgt","Spécialiste","turtle:1? poke:1?","Explosifs : pièges à ours et mines pour bloquer le passage.",{antitank:"Ses explosifs font de gros dégâts sur un gros corps.",antidive:"Les pièges à ours immobilisent, les mines repoussent."}],
+["Écho","dgt","Reconnaissance","dive:1 flank:2?","Héroïne volante avec beaucoup de burst, citée comme assassin.",{assassin:"Vole et élimine vite une cible fragile.",dive:"Arrive par les airs sur la backline."}],
+["Emre","dgt","Spécialiste","poke:1","Fusil à rafales de 3 balles, pistolet à vol de vie et grenade Cyber Frag. Très fort s'il tient le haut-sol, faible de près et contre les tanks.",{burst:"Grenade Cyber Frag puis rafales : gros dégâts d'un coup."}],
+["Faucheur","dgt","Flanc","brawl:1 flank:1","Deux fusils à pompe : énorme burst à bout portant. Son vol de vie lui permet de prendre peu de dégâts et d'en mettre plus longtemps.",{antitank:"Burst à bout portant sur les tanks, avec vol de vie.",burst:"Deux fusils à pompe à bout portant.",hitscan:"Fusils à pompe hitscan."}],
+["Fatale","dgt","Précision","poke:1","Sniper : un tir à la tête de loin peut donner un kill avant même le combat.",{sniper:"Fusil à lunette : tir à la tête à longue portée.",hitscan:"Tir instantané.",burst:"?Un tir à la tête peut suffire pour tuer."}],
+["Freja","dgt","Reconnaissance","poke:1","Sniper hybride : forte en poke et en bursts rapides, excellente sur une cible mais faible face à plusieurs ennemis. Sans ses dashs, elle est presque morte. Son ultimate Bola Shot entoure une cible et attire les ennemis proches.",{sniper:"Arbalète à tir explosif rapide (Take Aim), longue portée.",burst:"Take Aim puis Quick Dash : coups rapides sur une cible."}],
+["Genji","dgt","Flanc","dive:1 flank:1","Ninja rapide qui saute, esquive et plonge sur la backline.",{assassin:"Saute et élimine une cible fragile, puis esquive.",dive:"Ses sauts l'amènent sur la backline."}],
+["Hanzo","dgt","Précision","poke:1","Archer : flèche à la tête de loin, gros burst.",{sniper:"Flèche à la tête de loin.",burst:"Une flèche à la tête fait très mal."}],
+["Mei","dgt","Spécialiste","turtle:1 brawl:1","Blaster de glace et mur de glace : ralentit, gèle et bloque le passage.",{antidive:"Le mur de glace coupe le passage, ses tirs ralentissent puis gèlent."}],
+["Pharah","dgt","Reconnaissance","poke:1","Vole et tire des roquettes depuis les airs.",{}],
+["Shion","dgt","Flanc","flank:1 dive:1","Deux pistolets, très mobile. Sa moto (Joyride) la place dans le dos de l'ennemi. Elle est faible face au CC : Sombra, Ana et Chacal la gênent. Ultimate : Satsuriku Spree, trois charges de tirs.",{assassin:"Mobilité + burst : elle arrive par surprise et tue vite.",burst:"Execution et Evade donnent un gros burst en mobilité.",dive:"Sa moto l'amène vite derrière l'ennemi."}],
+["Sierra","dgt","Reconnaissance","poke:1","Anchor Drone pour se déplacer et Tracking Shot pour verrouiller une cible. Bonne en burst et en poke, mais son drone se casse facilement.",{burst:"Tracking Shot puis combos explosifs."}],
+["Sojourn","dgt","Précision","poke:1","Rail à charge : burst à moyenne et longue portée.",{sniper:"?Rail à longue portée.",burst:"Le tir chargé du rail frappe très fort d'un coup.",hitscan:"?Débattu : certaines sources la classent hitscan.",antitank:"?Ses tirs chargés font mal aux tanks."}],
+["Soldat: 76","dgt","Spécialiste","poke:1","Fusil à impulsion fiable et sprint. Son ultimate profite beaucoup du Nano Boost d'Ana.",{hitscan:"Fusil à tir instantané."}],
+["Sombra","dgt","Reconnaissance","flank:1 dive:2","Invisible : pirate les capacités ennemies pour les couper.",{assassin:"?Invisible, elle cible les fragiles puis les pirate.",hitscan:"Mitraillette à tir instantané.",antidive:"Son piratage coupe les capacités, dont celles de mobilité.",dive:"?Se camoufle puis frappe, et coupe les défenses adverses."}],
+["Symmetra","dgt","Spécialiste","brawl:1 turtle:1","Rayon continu et tourelles qui ralentissent. Bonne pour tenir une zone.",{antidive:"Ses tourelles ralentissent ceux qui approchent.",antitank:"?Son rayon continu monte en dégâts."}],
+["Torbjörn","dgt","Spécialiste","turtle:1 poke:2","Tourelle et fusil à pompe : le clic droit fait beaucoup de dégâts d'un coup à courte portée.",{antidive:"Sa tourelle affaiblit le plongeur et son fusil à pompe fait très mal d'un coup."}],
+["Tracer","dgt","Flanc","dive:1 flank:1","Très mobile : elle clignote, fait du burst et repart.",{assassin:"Mobilité et burst : elle arrive, tue, repart.",hitscan:"Pistolets à tir instantané.",dive:"Elle clignote pour arriver et repartir."}],
+["Vendetta","dgt","Flanc","dive:1 rush:1 flank:2","Première héroïne de dégâts en mêlée, axée dive. Chaque coup augmente sa vitesse (jusqu'à 5 cumuls). Un coup réduit les soins reçus par la cible. Warding Stance bloque de face, Soaring Slice la projette vers son épée, et son ultimate Sundering Blade traverse les barrières. Les ralentissements, sommeils et étourdissements coupent ses dashs.",{assassin:"Une vraie menace pour les fragiles de la backline.",burst:"La frappe verticale est critique, son ultimate chargé fait énormément de dégâts.",antitank:"?Son passif réduit les soins (15 % sur un tank) et son ultimate ignore la réduction de dégâts.",dive:"Son saut d'épée la projette sur sa cible."}],
+["Venture","dgt","Flanc","flank:1? dive:2?","Fore le sol pour surgir. Sa foreuse perturbe le placement ennemi.",{assassin:"?Burst depuis le sol."}],
+
+["Ana","sup","Tactique","poke:1 dive:2","Fusil de précision qui soigne, fléchette de sommeil et grenade biotique.",{sniper:"?Soutien à fusil de précision.",hitscan:"Seulement quand elle utilise la lunette.",antitank:"La grenade biotique coupe les soins du tank.",antidive:"Le sommeil endort un plongeur en plein saut, la grenade coupe ses soins."}],
+["Ange","sup","Secouriste","dive:1 poke:2","Soigne ou booste un allié en volant vers lui. Très forte en soutien collé à un DPS en forme.",{botheal:"Son soin et son boost se concentrent sur un allié.",dive:"Vole vers l'allié qui plonge pour le soigner."}],
+["Baptiste","sup","Tactique","poke:1 turtle:2?","Champ d'immortalité et tir en rafale. Faible de près.",{hitscan:"Son tir en rafale est hitscan."}],
+["Brigitte","sup","Survie","brawl:1 dive:2","Soutien de mêlée : le coup de bouclier étourdit. Utile pour plonger comme pour arrêter un dive.",{antidive:"Le coup de bouclier étourdit ceux qui arrivent au contact."}],
+["Illari","sup","Survie","poke:1","Soutien orienté poke : pression à distance.",{botheal:"?Soin à distance sans trop de dégâts."}],
+["Jetpack Cat","sup","Tactique","dive:1?","Vole en permanence, soigne avec ses Pawjectiles et peut remorquer un allié avec Lifeline. Purr est un soin de zone qui repousse les ennemis. Peu de vie, vulnérable aux héros hitscan.",{dive:"?Place un allié en hauteur ou derrière l'ennemi avec Lifeline.",antidive:"?Purr repousse les ennemis proches."}],
+["Juno","sup","Survie","rush:1 brawl:2","Hyper Ring : donne le signal du rush, la vitesse aide aussi le brawl à avancer.",{botheal:"?Soin à distance sans trop de dégâts."}],
+["Kiriko","sup","Secouriste","dive:1 brawl:2?","Suzu nettoie les effets négatifs et protège un instant. Elle se téléporte vers un allié.",{antidive:"Suzu nettoie et rend invulnérable un instant.",dive:"Se téléporte vers un allié qui a plongé."}],
+["Lúcio","sup","Tactique","rush:1 dive:1 brawl:1","Boost de vitesse pour toute l'équipe : avancer, plonger ou poursuivre.",{antidive:"Son onde de choc repousse ceux qui arrivent.",dive:"Sa vitesse aide à arriver et à repartir."}],
+["Mizuki","sup","Survie","rush:1 dive:2","Soutien agressif : sa chaîne bloque les capacités de mouvement de la cible, Healing Kasa rebondit entre les alliés et Katashiro Return le ramène en arrière. Kekkai Sanctuary soigne et absorbe les projectiles. Contré par Zenyatta, Chacal et Pharah.",{antidive:"Sa chaîne bloque les capacités de mouvement, son téléport lui sert à fuir.",dive:"Sa chaîne immobilise la cible pour les plongeurs (cité avec Doomfist)."}],
+["Moira","sup","Secouriste","brawl:1","Soigne en continu tout en blessant. Exemple type de brawl.",{}],
+["Vital","sup","Secouriste","poke:1?","Soutien de soin ciblé, classé bot heal.",{botheal:"Soin concentré sur ses alliés, peu de dégâts."}],
+["Wuyang","sup","Survie","rush:1 poke:1","Soutien à orbes d'eau qu'on dirige : bon poke, et il soigne à travers les barrières ennemies. Guardian Wave repousse et augmente les soins. Faible face aux dégâts de zone et au burst, contré par Bouldozer, Winston et Jetpack Cat.",{}],
+["Zenyatta","sup","Tactique","poke:1","Orbe de discorde : les cibles prennent plus de dégâts. Peu de survie.",{}]
+];
+
+/* ---------- compos ---------- */
+var COMPS = [
+{id:"brawl", nom:"Brawl",
+ def:"Toute l'équipe se bat groupée, au corps à corps. On avance par étapes et on écrase l'ennemi une fois dessus.",
+ forts:[["Une fois au contact, l'avantage est énorme.",0],["Beaucoup de soin et de résistance autour du tank (Lúcio et Moira dans l'exemple).",1]],
+ faibles:[["Le poke : sa portée et sa mobilité limitées l'exposent aux tirs pendant toute l'approche.",0],["Il faut une vitesse de Lúcio ou Juno pour faire avancer un tank comme Reinhardt ou Mauga.",0]],
+ jouer:[["Avancer par étapes : on pousse, on pose la barrière, on se met à couvert, puis on recommence.",0],["Prendre à l'ennemi son espace de repli avant de frapper.",0]],
+ contrer:[["Un poke qui garde la distance et fait payer l'approche.",0],["Tuer ou gêner le soutien qui donne la vitesse (Lúcio, Juno).",1]],
+ equipes:[{t:"Exemple Mobalytics",tank:["Reinhardt"],dgt:["Symmetra","Mei"],sup:["Lúcio","Moira"]}],
+ src:true},
+{id:"dive", nom:"Dive",
+ def:"On plonge à plusieurs sur une cible isolée avec de la mobilité et du burst, pour gagner le combat à nombre supérieur.",
+ forts:[["Mobilité extrême côté tank et DPS, avec du soin et de la survie côté soutiens.",0],["Elle contourne le poke : elle passe par des chemins que les héros à distance ne surveillent pas.",0],["Ana et Brigitte servent à plonger comme à stopper le dive adverse.",0]],
+ faibles:[["C'est la compo la plus dure à jouer : coordination, patience et lecture des deux équipes.",0],["Plonger sans plan est un piège : on meurt au milieu de l'ennemi.",0],["Le CC et les héros anti-dive (sommeil, étourdissement, ralentissement) coupent le plongeon.",0]],
+ jouer:[["Se préparer par étapes (haut-sol, positions) avant d'initier, pour prendre peu de poke.",0],["Attendre que l'ennemi ait utilisé ses capacités de mobilité ou de défense.",0],["Frapper une cible isolée de son équipe.",0]],
+ contrer:[["Les héros anti-dive (voir l'onglet Utilités).",1],["Rester groupé : le dive punit les héros isolés.",0]],
+ equipes:[{t:"Exemple Mobalytics 1",tank:["D.Va"],dgt:["Tracer","Vendetta"],sup:["Ana","Brigitte"]},{t:"Exemple Mobalytics 2",tank:["Winston"],dgt:["Tracer","Genji"],sup:["Kiriko","Lúcio"]}],
+ src:true},
+{id:"poke", nom:"Poke",
+ def:"On use l'ennemi à moyenne et longue portée avant qu'il arrive au contact, en restant protégé par des boucliers et des décors.",
+ forts:[["Elle use les ressources adverses de loin : l'ennemi gâche ses défenses avant d'arriver.",0],["Le crossfire : on tire sous plusieurs angles, donc l'ennemi doit choisir ce qu'il bloque (la matrice de D.Va ne protège que d'un côté).",0],["Un sniper (Fatale, Hanzo) peut obtenir un kill avant le combat.",0]],
+ faibles:[["Le dive est le meilleur moyen de la battre sur la plupart des cartes.",0],["Le rush : elle dépend de l'espace, et Sigma, Emre ou Baptiste sont faibles de près.",0],["Le brawl a du mal, mais avec une vitesse de Lúcio ou Juno il peut gagner.",0]],
+ jouer:[["Rester à distance et user l'ennemi tôt.",0],["Créer le crossfire : ne pas se mettre tous au même endroit.",0],["Tourner autour de l'objectif quand l'ennemi approche pour garder la bonne distance.",0]],
+ contrer:[["Couper les lignes de vue au lieu d'avancer droit.",0],["Forcer le combat rapproché avec des capacités de mobilité.",0],["Envoyer toute l'équipe du même côté pour battre les isolés.",0],["Prendre le haut-sol : un Emre ou un Sojourn qui le garde seul est très dur à battre.",0]],
+ equipes:[{t:"Exemple Mobalytics",tank:["Sigma"],dgt:["Sojourn","Emre"],sup:["Illari","Baptiste"]}],
+ src:true},
+{id:"rush", nom:"Rush",
+ def:"On avance tout de suite et d'un coup, avec de la vitesse et du contrôle, pour prendre l'espace et passer au corps à corps.",
+ forts:[["Elle bat le poke : la vitesse referme la distance avant que l'ennemi use l'équipe.",0],["Juno donne le signal avec Hyper Ring, la Reine des Junkers soigne et booste son équipe avec son cri pour poursuivre.",0]],
+ faibles:[["Tout repose sur le timing des capacités de vitesse et de dégâts.",1],["Si on arrive trop tôt, on subit les dégâts à distance.",1]],
+ jouer:[["Garder les capacités de vitesse et de dégâts jusqu'à être presque à portée.",0],["Puis tout lâcher ensemble pour submerger l'ennemi au contact.",0]],
+ contrer:[["Ralentir et immobiliser avant l'arrivée (CC, zones).",1],["Faire des dégâts à distance tant qu'ils ne sont pas lancés.",1]],
+ equipes:[{t:"Exemple Mobalytics",tank:["Reine des Junkers"],dgt:["Anran","Vendetta"],sup:["Juno","Mizuki"]}],
+ src:true},
+{id:"turtle", nom:"Turtle",
+ def:"On tient une position avec des boucliers, des tourelles et des murs, et on laisse l'ennemi venir.",
+ forts:[["Tourelles, murs et pièges qui bloquent le passage : bon contre le plongeon.",1],["Une position solide où l'ennemi doit venir à toi.",1]],
+ faibles:[["Immobile : l'ennemi choisit le moment et l'angle d'attaque.",1],["Peu de mobilité pour fuir si la position tombe.",1]],
+ jouer:[["Poser tourelles et murs sur les entrées avant l'arrivée de l'ennemi.",1]],
+ contrer:[["Attaquer par plusieurs angles plutôt que droit dans les défenses.",1]],
+ equipes:[], noteTeam:"Aucun exemple vérifié : à compléter.", src:false},
+{id:"flank", nom:"Flank",
+ def:"Un ou deux héros contournent la ligne ennemie pour attaquer la backline pendant que le reste de l'équipe occupe l'ennemi.",
+ forts:[["Ils tuent les fragiles mal protégés (soutiens, DPS isolés).",0],["Ils obligent l'ennemi à diviser son attention.",1]],
+ faibles:[["Le CC (étourdir, endormir, pirater) les stoppe : Shion est gênée par Sombra, Ana et Chacal.",0],["Isolés de l'équipe, ils meurent vite s'ils sont repérés.",1]],
+ jouer:[["Attendre que l'ennemi ait utilisé ses capacités de mobilité ou de défense avant d'attaquer.",0],["Rester en mouvement.",0]],
+ contrer:[["Garder un soutien ou un héros avec du CC (Ana, Brigitte, Cassidy…).",1],["Rester groupé.",1]],
+ equipes:[], noteTeam:"Aucun exemple vérifié : à compléter.", src:false}
+];
+
+/* ---------- schémas ---------- */
+function marker(id){return '<marker id="'+id+'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah"/></marker>';}
+function circ(x,y,c){return '<circle class="'+c+'" cx="'+x+'" cy="'+y+'" r="7"/>';}
+function dia(id,uid,title){
+  var m='m-'+uid, s='', ally=function(a){return a.map(function(p){return circ(p[0],p[1],'a');}).join('');}, foe=function(a){return a.map(function(p){return circ(p[0],p[1],'f');}).join('');};
+  if(id==='poke'){
+    s=ally([[28,22],[42,55],[28,88]])+foe([[198,46],[210,60],[198,74]])+
+      '<path class="ln dash" d="M40 24 L184 50" marker-end="url(#'+m+')"/><path class="ln dash" d="M54 56 L184 60" marker-end="url(#'+m+')"/><path class="ln dash" d="M40 86 L184 72" marker-end="url(#'+m+')"/>';
+  } else if(id==='dive'){
+    s=ally([[30,40],[30,70],[48,55]])+foe([[150,35],[150,55],[150,75],[212,55]])+
+      '<path class="ln" d="M56 50 Q132 -8 202 50" marker-end="url(#'+m+')"/>';
+  } else if(id==='brawl'){
+    s=ally([[96,40],[104,58],[96,76]])+foe([[136,40],[144,58],[136,76]])+
+      '<path class="ln thick" d="M20 58 L80 58" marker-end="url(#'+m+')"/><path class="ln thick" d="M220 58 L160 58" marker-end="url(#'+m+')" opacity=".35"/>';
+  } else if(id==='rush'){
+    s=ally([[28,40],[36,58],[28,76]])+foe([[198,46],[208,60],[198,74]])+
+      '<path class="ln thick" d="M54 58 L176 58" marker-end="url(#'+m+')"/><path class="ln" d="M60 38 L120 38"/><path class="ln" d="M60 78 L120 78"/><path class="ln" d="M70 28 L100 28"/><path class="ln" d="M70 88 L100 88"/>';
+  } else if(id==='turtle'){
+    s=ally([[24,40],[30,58],[24,76]])+foe([[200,40],[208,58],[200,76]])+
+      '<path class="arc" d="M82 18 Q112 58 82 98"/><rect class="sq" x="52" y="30" width="12" height="12" rx="2"/><rect class="sq" x="52" y="74" width="12" height="12" rx="2"/>'+
+      '<path class="ln dash" d="M188 42 L120 52" marker-end="url(#'+m+')"/><path class="ln dash" d="M188 76 L120 64" marker-end="url(#'+m+')"/>';
+  } else {
+    s=ally([[40,42],[48,58],[40,74]])+foe([[168,42],[178,58],[168,74],[212,50]])+
+      '<path class="ln dash" d="M62 58 L150 58" marker-end="url(#'+m+')"/>'+circ(36,98,'a')+
+      '<path class="ln" d="M50 100 Q150 118 224 92 Q238 76 216 66" marker-end="url(#'+m+')"/>';
+  }
+  return '<svg class="dia" viewBox="0 0 240 110" role="img" aria-label="'+title+'"><defs>'+marker(m)+'</defs>'+s+'</svg>';
+}
+var DIA_TITLE = {
+  brawl:"Schéma : l'équipe avance groupée et frappe au corps à corps",
+  dive:"Schéma : un héros saute par-dessus la ligne ennemie vers l'arrière",
+  poke:"Schéma : l'équipe tire de loin, depuis plusieurs angles",
+  rush:"Schéma : toute l'équipe fonce d'un coup vers l'ennemi",
+  turtle:"Schéma : l'équipe se tient derrière un mur et des tourelles",
+  flank:"Schéma : un héros contourne la ligne pour frapper par l'arrière"
+};
+
+/* ---------- données dérivées ---------- */
+function slug(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+var HEROES = H.map(function(r){
+  var comps = {};
+  r[3].split(" ").forEach(function(tok){
+    var p = tok.split(":"), q = /\?$/.test(p[1]);
+    comps[p[0]] = {lvl:parseInt(p[1],10), q:q};
+  });
+  var utils = {};
+  Object.keys(r[5]).forEach(function(k){
+    var v = r[5][k], q = v.charAt(0)==="?";
+    utils[k] = {why:q?v.slice(1):v, q:q};
+  });
+  return {id:slug(r[0]), nom:r[0], role:r[1], sous:r[2], comps:comps, desc:r[4], utils:utils};
+});
+var BY_ID = {}; HEROES.forEach(function(h){BY_ID[h.id]=h;});
+var BY_NAME = {}; HEROES.forEach(function(h){BY_NAME[h.nom]=h;});
+function byName(a,b){return a.nom.localeCompare(b.nom,"fr");}
+
+function chip(h,lvl,q){
+  return '<button type="button" class="chip r-'+h.role+(lvl===2?' l2':'')+'" data-hero="'+h.id+'">'+h.nom+(q?'<span class="qm" title="Placement à confirmer">?</span>':'')+'</button>';
+}
+function chipsFor(compId){
+  var out = {tank:[],dgt:[],sup:[]};
+  HEROES.forEach(function(h){ if(h.comps[compId]){ out[h.role].push({h:h,lvl:h.comps[compId].lvl,q:h.comps[compId].q}); }});
+  Object.keys(out).forEach(function(k){ out[k].sort(function(a,b){return a.lvl-b.lvl || byName(a.h,b.h);}); });
+  return out;
+}
+function roleCols(data){
+  return '<div class="cols3">'+["tank","dgt","sup"].map(function(r){
+    var list = data[r];
+    return '<div class="rolecol"><div class="rolebar display r-'+r+'">'+ROLES[r]+'</div><div class="rolebody">'+
+      (list.length ? list.map(function(x){return chip(x.h,x.lvl,x.q);}).join("") : '<p class="none">Aucun héros</p>')+'</div></div>';
+  }).join("")+'</div>';
+}
+function bullets(arr){
+  return '<ul>'+arr.map(function(b){return '<li>'+b[0]+(b[1]?'<span class="inf" title="Déduction, pas une source">◇</span>':'')+'</li>';}).join("")+'</ul>';
+}
+
+/* ---------- rendu : compos ---------- */
+var curComp = "brawl", curUtil = "assassin";
+function renderPick(){
+  document.getElementById("comp-pick").innerHTML = COMPS.map(function(c){
+    return '<button type="button" class="cp" data-comp="'+c.id+'" aria-pressed="'+(c.id===curComp)+'">'+dia(c.id,c.id+"-p",DIA_TITLE[c.id])+'<span class="nm display">'+c.nom+'</span></button>';
+  }).join("");
+}
+function teamHtml(c){
+  if(!c.equipes.length){ return '<div class="teams"><h3 class="display">Équipe type</h3><p class="none">'+c.noteTeam+'</p></div>'; }
+  return '<div class="teams"><h3 class="display">Équipes types</h3>'+c.equipes.map(function(t){
+    var all = [].concat(t.tank,t.dgt,t.sup).map(function(n){var h=BY_NAME[n];return chip(h,1,false);}).join("");
+    return '<div class="team"><div class="tt">'+t.t+'</div>'+all+'</div>';
+  }).join("")+'</div>';
+}
+function renderComp(){
+  var c = COMPS.filter(function(x){return x.id===curComp;})[0];
+  var html = '<div class="phead">'+dia(c.id,c.id+"-b",DIA_TITLE[c.id])+'<div><h2 class="display">'+c.nom+'</h2><p>'+c.def+'</p></div></div>'+
+    roleCols(chipsFor(c.id))+
+    '<div class="cols2"><div class="box good"><h3 class="display">Ce qui est fort</h3>'+bullets(c.forts)+'</div>'+
+    '<div class="box bad"><h3 class="display">Ce qui est faible</h3>'+bullets(c.faibles)+'</div>'+
+    '<div class="box play"><h3 class="display">Comment la jouer</h3>'+bullets(c.jouer)+'</div>'+
+    '<div class="box counter"><h3 class="display">Comment la contrer</h3>'+bullets(c.contrer)+'</div></div>'+
+    teamHtml(c)+
+    '<p class="src">'+(c.src ? 'Sources : guides <a href="https://mobalytics.gg/overwatch/guides/poke-team-comp" target="_blank" rel="noopener">Mobalytics</a> sur le poke et le dive, qui décrivent aussi le rush et le brawl. Les points marqués ◇ sont des déductions.' : 'Pas de guide de référence trouvé pour cette compo : les textes sont des déductions à confirmer.')+'</p>';
+  document.getElementById("comp-panel").innerHTML = html;
+}
+
+/* ---------- rendu : utilités ---------- */
+function renderUtilPick(){
+  document.getElementById("util-pick").innerHTML = UTILS.map(function(u){
+    return '<button type="button" class="up" data-util="'+u.id+'" aria-pressed="'+(u.id===curUtil)+'">'+u.nom+'</button>';
+  }).join("");
+}
+function renderUtil(){
+  var u = UTILS.filter(function(x){return x.id===curUtil;})[0];
+  var html = '<p class="udef">'+u.def+'</p>'+(u.note?'<p class="hint">'+u.note+'</p>':'')+'<div class="urows">';
+  ["tank","dgt","sup"].forEach(function(r){
+    var list = HEROES.filter(function(h){return h.role===r && h.utils[u.id];}).sort(byName);
+    if(!list.length) return;
+    html += '<h3 class="urole display r-'+r+'">'+ROLES[r]+'</h3>';
+    list.forEach(function(h){
+      var x = h.utils[u.id];
+      html += '<div class="urow"><div>'+chip(h,1,x.q)+'</div><div class="why">'+x.why+'</div></div>';
+    });
+  });
+  html += '</div>';
+  document.getElementById("util-panel").innerHTML = html;
+}
+
+/* ---------- rendu : tableau ---------- */
+function renderMatrix(){
+  document.getElementById("matrix").innerHTML = COMPS.map(function(c){
+    return '<div class="mrow"><h3 class="display">'+c.nom+'</h3>'+roleCols(chipsFor(c.id))+'</div>';
+  }).join("");
+}
+
+/* ---------- rendu : tous les héros ---------- */
+var roleFilter = "all", query = "";
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+function renderAll(){
+  var html = "", n = 0;
+  var cols = ["tank","dgt","sup"].filter(function(r){return roleFilter==="all"||roleFilter===r;});
+  cols.forEach(function(r){
+    var block = "";
+    SOUS[r].forEach(function(s){
+      var list = HEROES.filter(function(h){
+        return h.role===r && h.sous===s && (!query || norm(h.nom).indexOf(norm(query))>-1);
+      }).sort(byName);
+      if(!list.length) return;
+      n += list.length;
+      block += '<h4 class="sub display">'+(SOUS_LABEL[s]||s)+(PASSIFS[s]?'<small>'+PASSIFS[s]+'</small>':'')+'</h4>'+list.map(function(h){return chip(h,1,false);}).join("");
+    });
+    if(block) html += '<h3 class="urole display r-'+r+'">'+ROLES[r]+'</h3>'+block;
+  });
+  document.getElementById("all-heroes").innerHTML = n ? html : '<p class="none">Aucun héros ne correspond à cette recherche.</p>';
+}
+
+/* ---------- fiche héros ---------- */
+var COMP_NAME = {}; COMPS.forEach(function(c){COMP_NAME[c.id]=c.nom;});
+var UTIL_NAME = {}; UTILS.forEach(function(u){UTIL_NAME[u.id]=u.nom;});
+function openHero(id){
+  var h = BY_ID[id]; if(!h) return;
+  var passif = PASSIFS[h.sous];
+  var comps = Object.keys(h.comps).sort(function(a,b){return h.comps[a].lvl-h.comps[b].lvl;}).map(function(k){
+    var c = h.comps[k];
+    return '<li>'+COMP_NAME[k]+(c.lvl===1?' (principal)':' (peut aussi)')+(c.q?' <span class="qm">?</span>':'')+'</li>';
+  }).join("");
+  var utils = Object.keys(h.utils).map(function(k){
+    var u = h.utils[k];
+    return '<li><b>'+UTIL_NAME[k]+'</b>'+(u.q?' <span class="qm">?</span>':'')+' : '+u.why+'</li>';
+  }).join("");
+  document.getElementById("hd-body").innerHTML =
+    '<h2 class="display r-'+h.role+'" id="hd-title" style="color:var(--c)">'+h.nom+'</h2>'+
+    '<div class="meta">'+ROLES[h.role]+', sous-rôle '+(SOUS_LABEL[h.sous]||h.sous)+(passif?'. '+passif:'')+'</div>'+
+    '<p>'+h.desc+'</p>'+
+    '<h3 class="display">Compos</h3><ul>'+comps+'</ul>'+
+    (utils?'<h3 class="display">Utilités</h3><ul>'+utils+'</ul>':'')+
+    '<button type="button" class="close" data-close="1">Fermer</button>';
+  var d = document.getElementById("hd");
+  if(typeof d.showModal === "function"){ d.showModal(); } else { d.setAttribute("open",""); }
+}
+
+/* ---------- événements ---------- */
+document.addEventListener("click",function(e){
+  var t = e.target;
+  var hero = t.closest("[data-hero]"); if(hero){ openHero(hero.getAttribute("data-hero")); return; }
+  if(t.closest("[data-close]")){ document.getElementById("hd").close(); return; }
+  var dlg = document.getElementById("hd");
+  if(t===dlg){ dlg.close(); return; }
+  var tab = t.closest("[data-tab]");
+  if(tab){
+    document.querySelectorAll(".tab").forEach(function(b){b.setAttribute("aria-selected", b===tab ? "true":"false");});
+    ["compos","utils","matrix","heros"].forEach(function(k){document.getElementById("s-"+k).hidden = (k!==tab.getAttribute("data-tab"));});
+    return;
+  }
+  var cp = t.closest("[data-comp]");
+  if(cp){ curComp = cp.getAttribute("data-comp"); renderPick(); renderComp(); return; }
+  var up = t.closest("[data-util]");
+  if(up){ curUtil = up.getAttribute("data-util"); renderUtilPick(); renderUtil(); return; }
+  var rf = t.closest("[data-role]");
+  if(rf){ roleFilter = rf.getAttribute("data-role"); document.querySelectorAll(".rf").forEach(function(b){b.setAttribute("aria-pressed", b===rf ? "true":"false");}); renderAll(); return; }
+});
+document.getElementById("q").addEventListener("input",function(e){ query = e.target.value.trim(); renderAll(); });
+
+renderPick(); renderComp(); renderUtilPick(); renderUtil(); renderMatrix(); renderAll();
+})();
+</script>
+</body>
+</html>
